@@ -65,9 +65,25 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Azure CLI script
-        uses: azure/cli@v2
+      - name: Checking Branch
+        id: branch_check
+        run: |
+          echo "Running on branch ${{ github.ref }}"
+          if [ "${{ github.ref }}" = "refs/heads/master" ]; then
+            echo "sqai_repo=production" >> $GITHUB_OUTPUT
+#            echo "secret=${{ secrets.GCP_SECRET_PRODUCTION }}" >> $GITHUB_OUTPUT
+          elif [ "${{ github.ref }}" = "refs/heads/staging" ]; then
+            echo "sqai_repo=staging" >> $GITHUB_OUTPUT
+#            echo "secret=${{ secrets.GCP_SECRET_STAGING }}" >> $GITHUB_OUTPUT
+          else
+            echo "sqai_repo=dev" >> $GITHUB_OUTPUT
+#            echo "secret=${{ secrets.GCP_SECRET_DEV }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Build and deploy Container App
+        uses: azure/container-apps-deploy-action@v1
         with:
-          azcliversion: latest
-          inlineScript: |
-            az account show
+          appSourcePath: ${{ github.workspace }}/src
+          acrName: ${{ github.event.repository.name }}
+          containerAppName: ${{ github.event.repository.name }}
+          resourceGroup: squarcle-dev-rg
