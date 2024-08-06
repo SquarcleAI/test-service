@@ -21,6 +21,10 @@ env:
   IMAGE_NAME: ${{ github.event.repository.name }}
   GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
 
+permissions:
+  id-token: write
+  contents: read
+  
 #3
 jobs:
   linting:
