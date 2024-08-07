@@ -35,28 +35,22 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Convert repository name to camelCase
-        id: convert-name
-        run: |
-          REPO_NAME="${{ github.event.repository.name }}"
-          # Convert dashed name to camelCase
-          CAMEL_CASE_NAME=$(echo "$REPO_NAME" | awk -F'-' '{ 
-            for (i = 1; i <= NF; i++) { 
-              if (i == 1) {
-                printf "%s", $i  # print first part as is
-              } else {
-                printf "%s%s", toupper(substr($i, 1, 1)), substr($i, 2)
-              }
-            }
-          }')
-          echo "Converted name: $CAMEL_CASE_NAME"
-          echo "CAMEL_CASE_NAME=$CAMEL_CASE_NAME" >> $GITHUB_ENV
 
-      - name: Build and deploy Container App
-        uses: azure/container-apps-deploy-action@v1
+      - name: 'Build and push image'
+        uses: azure/docker-login@v1
         with:
-          appSourcePath: ${{ github.workspace }}
-          acrName: ${{ env.CAMEL_CASE_NAME }}
-          containerAppName: ${{ github.event.repository.name }}
-          resourceGroup: ${{ secrets.AZURE_SQUARCLE_RESOURCE_GROUP }}
-          runtimeStack: 'nodejs'
+          login-server: ${{ secrets.AZURE_REGISTRY_LOGIN_SERVER }}
+          username: ${{ secrets.AZURE_REGISTRY_USERNAME }}
+          password: ${{ secrets.AZURE_REGISTRY_PASSWORD }}
+      - run: |
+          docker build . -t ${{ secrets.AZURE_REGISTRY_LOGIN_SERVER }}/${{ github.event.repository.name }}:${{ github.sha }}
+          docker push ${{ secrets.AZURE_REGISTRY_LOGIN_SERVER }}/${{ github.event.repository.name }}:${{ github.sha }}
+
+#      - name: Build and deploy Container App
+#        uses: azure/container-apps-deploy-action@v1
+#        with:
+#          appSourcePath: ${{ github.workspace }}
+#          acrName: ${{ env.CAMEL_CASE_NAME }}
+#          containerAppName: ${{ github.event.repository.name }}
+#          resourceGroup: ${{ secrets.AZURE_SQUARCLE_RESOURCE_GROUP }}
+#          runtimeStack: 'nodejs'
