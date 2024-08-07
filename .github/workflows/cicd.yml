@@ -47,23 +47,26 @@ jobs:
             echo "sqai_repo=dev" >> $GITHUB_OUTPUT
           fi
 
-      - name: Login to ACR
-        uses: docker/login-action@v3
-        with:
-          registry: ${{ secrets.AZURE_REGISTRY_LOGIN_SERVER }}
-          username: ${{ secrets.AZURE_CLIENT_ID }}
-          password: ${{ secrets.AZURE_CLIENT_SECRET }}
-
-      - name: Build and Push to ACR
-        uses: docker/build-push-action@v6
-        with:
-          push: true
-          tags: ${{ secrets.AZURE_REGISTRY_LOGIN_SERVER }}/${{ steps.branch_check.outputs.sqai_repo }}/${{ github.event.repository.name }}:${{ github.sha }}
-          file: Dockerfile
+#      - name: Login to ACR
+#        uses: docker/login-action@v3
+#        with:
+#          registry: ${{ secrets.AZURE_REGISTRY_LOGIN_SERVER }}
+#          username: ${{ secrets.AZURE_CLIENT_ID }}
+#          password: ${{ secrets.AZURE_CLIENT_SECRET }}
+#
+#      - name: Build and Push to ACR
+#        uses: docker/build-push-action@v6
+#        with:
+#          push: true
+#          tags: ${{ secrets.AZURE_REGISTRY_LOGIN_SERVER }}/${{ steps.branch_check.outputs.sqai_repo }}/${{ github.event.repository.name }}:${{ github.sha }}
+#          file: Dockerfile
 
       - name: Build and deploy Container App
         uses: azure/container-apps-deploy-action@v1
         with:
+          acrName: ${{ secrets.AZURE_REGISTRY_USERNAME}}
+          acrUsername: ${{ secrets.AZURE_REGISTRY_USERNAME}}
+          acrPassword: ${{ secrets.AZURE_REGISTRY_PASSWORD}}
           containerAppName: ${{ github.event.repository.name }}-${{ steps.branch_check.outputs.sqai_repo }}
           resourceGroup: ${{ secrets.AZURE_SQUARCLE_RESOURCE_GROUP }}
           imageToDeploy: ${{ secrets.AZURE_REGISTRY_LOGIN_SERVER }}/${{ steps.branch_check.outputs.sqai_repo }}/${{ github.event.repository.name }}:${{ github.sha }}
