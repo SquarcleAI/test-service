@@ -59,3 +59,4 @@ jobs:
           acrName: ${{ env.CAMEL_CASE_NAME }}
           containerAppName: ${{ github.event.repository.name }}
           resourceGroup: ${{ secrets.AZURE_SQUARCLE_RESOURCE_GROUP }}
+          runtimeStack: 'nodejs'
