@@ -43,6 +43,13 @@ jobs:
           username: ${{ secrets.AZURE_CLIENT_ID }}
           password: ${{ secrets.AZURE_CLIENT_SECRET }}
 
+      - name: Build and Push to ACR
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: ${{ secrets.AZURE_REGISTRY_LOGIN_SERVER }}/dev/${{ github.event.repository.name }}
+          file: Dockerfile
+
 #      - name: Build and deploy Container App
 #        uses: azure/container-apps-deploy-action@v1
 #        with:
