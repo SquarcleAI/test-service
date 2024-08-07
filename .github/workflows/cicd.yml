@@ -40,11 +40,11 @@ jobs:
         run: |
           echo "Running on branch ${{ github.ref }}"
           if [ "${{ github.ref }}" = "refs/heads/master" ]; then
-            echo "gcp_repo=production" >> $GITHUB_OUTPUT
+            echo "sqai_repo=production" >> $GITHUB_OUTPUT
           elif [ "${{ github.ref }}" = "refs/heads/staging" ]; then
-            echo "gcp_repo=staging" >> $GITHUB_OUTPUT
+            echo "sqai_repo=staging" >> $GITHUB_OUTPUT
           else
-            echo "gcp_repo=dev" >> $GITHUB_OUTPUT
+            echo "sqai_repo=dev" >> $GITHUB_OUTPUT
           fi
 
       - name: Login to ACR
@@ -58,14 +58,12 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: ${{ secrets.AZURE_REGISTRY_LOGIN_SERVER }}/${{ steps.branch_check.outputs.gcp_repo }}/${{ github.event.repository.name }}:${{ github.sha }}
+          tags: ${{ secrets.AZURE_REGISTRY_LOGIN_SERVER }}/${{ steps.branch_check.outputs.sqai_repo }}/${{ github.event.repository.name }}:${{ github.sha }}
           file: Dockerfile
 
       - name: Build and deploy Container App
         uses: azure/container-apps-deploy-action@v1
         with:
-          appSourcePath: ${{ github.workspace }}
-          acrName: ${{ env.CAMEL_CASE_NAME }}
-          containerAppName: ${{ github.event.repository.name }}
+          containerAppName: ${{ github.event.repository.name }}-${{ steps.branch_check.outputs.sqai_repo }}
           resourceGroup: ${{ secrets.AZURE_SQUARCLE_RESOURCE_GROUP }}
-          imageToDeploy: ${{ secrets.AZURE_REGISTRY_LOGIN_SERVER }}/${{ steps.branch_check.outputs.gcp_repo }}/${{ github.event.repository.name }}:${{ github.sha }}
+          imageToDeploy: ${{ secrets.AZURE_REGISTRY_LOGIN_SERVER }}/${{ steps.branch_check.outputs.sqai_repo }}/${{ github.event.repository.name }}:${{ github.sha }}
