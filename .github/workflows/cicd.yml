@@ -61,11 +61,11 @@ jobs:
           tags: ${{ secrets.AZURE_REGISTRY_LOGIN_SERVER }}/${{ steps.branch_check.outputs.gcp_repo }}/${{ github.event.repository.name }}:${{ github.sha }}
           file: Dockerfile
 
-#      - name: Build and deploy Container App
-#        uses: azure/container-apps-deploy-action@v1
-#        with:
-#          appSourcePath: ${{ github.workspace }}
-#          acrName: ${{ env.CAMEL_CASE_NAME }}
-#          containerAppName: ${{ github.event.repository.name }}
-#          resourceGroup: ${{ secrets.AZURE_SQUARCLE_RESOURCE_GROUP }}
-#          runtimeStack: 'nodejs'
+      - name: Build and deploy Container App
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          appSourcePath: ${{ github.workspace }}
+          acrName: ${{ env.CAMEL_CASE_NAME }}
+          containerAppName: ${{ github.event.repository.name }}
+          resourceGroup: ${{ secrets.AZURE_SQUARCLE_RESOURCE_GROUP }}
+          imageToDeploy: ${{ secrets.AZURE_REGISTRY_LOGIN_SERVER }}/${{ steps.branch_check.outputs.gcp_repo }}/${{ github.event.repository.name }}:${{ github.sha }}
