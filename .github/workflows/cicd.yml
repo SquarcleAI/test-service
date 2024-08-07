@@ -64,6 +64,7 @@ jobs:
       - name: Build and deploy Container App
         uses: azure/container-apps-deploy-action@v1
         with:
+          dockerfilePath: ${{ github.workspace }}/Dockerfile
           appSourcePath: ${{ github.workspace }}
           acrName: ${{ secrets.AZURE_REGISTRY_USERNAME}}
           acrUsername: ${{ secrets.AZURE_REGISTRY_USERNAME}}
