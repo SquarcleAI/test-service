@@ -55,6 +55,7 @@ jobs:
       - name: Build and deploy Container App
         uses: azure/container-apps-deploy-action@v1
         with:
+          appSourcePath: ${{ github.workspace }}
           acrName: ${{ env.CAMEL_CASE_NAME }}
           containerAppName: ${{ github.event.repository.name }}
           resourceGroup: ${{ secrets.AZURE_SQUARCLE_RESOURCE_GROUP }}
