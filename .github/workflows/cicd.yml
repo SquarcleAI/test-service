@@ -64,7 +64,13 @@ jobs:
       - name: Build and deploy Container App
         uses: azure/container-apps-deploy-action@v1
         with:
-          imageToDeploy: mcr.microsoft.com/azuredocs/containerapps-helloworld:latest
+          appSourcePath: ${{ github.workspace }}
+          acrName: mytestacr
+          targetPort: 8080
+          ingress: external
+          disableTelemetry: true
+          resourceGroup: sqai-rg
+          imageToBuild: squai.azurecr.io/production/test-service:97065687ed38f2b0840a3468143a885b27c6be14
 
 #      - name: Build and deploy Container App
 #        uses: azure/container-apps-deploy-action@v1
