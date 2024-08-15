@@ -70,9 +70,9 @@ jobs:
           disableTelemetry: true
           resourceGroup: sqai-rg
           imageToDeploy: squai.azurecr.io/production/test-service:97065687ed38f2b0840a3468143a885b27c6be14
-          acrName: ${{ secrets.AZURE_REGISTRY_USERNAME}}
-          acrUsername: ${{ secrets.AZURE_REGISTRY_USERNAME}}
-          acrPassword: ${{ secrets.AZURE_REGISTRY_PASSWORD}}
+#          acrName: ${{ secrets.AZURE_REGISTRY_USERNAME}}
+#          acrUsername: ${{ secrets.AZURE_REGISTRY_USERNAME}}
+#          acrPassword: ${{ secrets.AZURE_REGISTRY_PASSWORD}}
 
 #      - name: Build and deploy Container App
 #        uses: azure/container-apps-deploy-action@v1
