@@ -61,6 +61,11 @@ jobs:
           tags: ${{ secrets.AZURE_REGISTRY_LOGIN_SERVER }}/${{ steps.branch_check.outputs.sqai_repo }}/${{ github.event.repository.name }}:${{ github.sha }}
           file: Dockerfile
 
+      - name: Build and deploy Container App
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          imageToDeploy: mcr.microsoft.com/azuredocs/containerapps-helloworld:latest
+
 #      - name: Build and deploy Container App
 #        uses: azure/container-apps-deploy-action@v1
 #        with:
