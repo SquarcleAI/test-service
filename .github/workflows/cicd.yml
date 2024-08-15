@@ -61,13 +61,13 @@ jobs:
           tags: ${{ secrets.AZURE_REGISTRY_LOGIN_SERVER }}/${{ steps.branch_check.outputs.sqai_repo }}/${{ github.event.repository.name }}:${{ github.sha }}
           file: Dockerfile
 
-      - name: Build and deploy Container App
-        uses: azure/container-apps-deploy-action@v1
-        with:
-          dockerfilePath: ${{ github.workspace }}/Dockerfile
-          appSourcePath: ${{ github.workspace }}
-          acrName: ${{ secrets.AZURE_REGISTRY_USERNAME}}
-          acrUsername: ${{ secrets.AZURE_REGISTRY_USERNAME}}
-          acrPassword: ${{ secrets.AZURE_REGISTRY_PASSWORD}}
-          containerAppName: ${{ github.event.repository.name }}${{ steps.branch_check.outputs.sqai_repo }}
-          resourceGroup: ${{ secrets.AZURE_SQUARCLE_RESOURCE_GROUP }}
+#      - name: Build and deploy Container App
+#        uses: azure/container-apps-deploy-action@v1
+#        with:
+#          dockerfilePath: ${{ github.workspace }}/Dockerfile
+#          appSourcePath: ${{ github.workspace }}
+#          acrName: ${{ secrets.AZURE_REGISTRY_USERNAME}}
+#          acrUsername: ${{ secrets.AZURE_REGISTRY_USERNAME}}
+#          acrPassword: ${{ secrets.AZURE_REGISTRY_PASSWORD}}
+#          containerAppName: ${{ github.event.repository.name }}${{ steps.branch_check.outputs.sqai_repo }}
+#          resourceGroup: ${{ secrets.AZURE_SQUARCLE_RESOURCE_GROUP }}
