@@ -73,6 +73,7 @@ jobs:
           acrName: ${{ secrets.AZURE_REGISTRY_USERNAME}}
           acrUsername: ${{ secrets.AZURE_REGISTRY_USERNAME}}
           acrPassword: ${{ secrets.AZURE_REGISTRY_PASSWORD}}
+          builderStack: "node"
 
 #      - name: Build and deploy Container App
 #        uses: azure/container-apps-deploy-action@v1
