@@ -58,10 +58,17 @@ jobs:
           username: ${{ secrets.AZURE_ACR_NAME }}
           password: ${{ secrets.AZURE_REGISTRY_PASSWORD }}
 
+      - name: Set ACR Tag
+        run: echo "ACR_TAG=${{ secrets.AZURE_ACR_NAME }}.azurecr.io/${{ steps.branch_check.outputs.sqai_repo }}/${{ github.event.repository.name }}:${{ github.sha }}" >> $GITHUB_ENV
+
       - name: Build and Push to ACR
         uses: docker/build-push-action@v6
+        id: acr
         with:
           push: true
-          tags: ${{ secrets.AZURE_ACR_NAME }}.azurecr.io/${{ steps.branch_check.outputs.sqai_repo }}/${{ github.event.repository.name }}:${{ github.sha }}
+          tags: ${{ env.ACR_TAG }}
           file: Dockerfile
 
+      - name: Use ACR Tag
+        run: | 
+          echo "Using ACR tag: ${{ env.ACR_TAG }}"
