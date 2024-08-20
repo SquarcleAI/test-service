@@ -77,8 +77,8 @@ jobs:
         run: |
           az containerapp up \
             --name  ${{ github.event.repository.name }}-${{ steps.branch_check.outputs.sqai_repo }} \
-            --resource-group ${{env.RESOURCE_GROUP}} \
-            --environment ${{env.ENVIRONMENT}} \
+            --resource-group ${{env.AZURE_RESOURCE_GROUP}} \
+            --environment ${{env.AZURE_ENVIRONMENT}} \
             --image ${{ env.ACR_TAG }} \
             --target-port 8080 \
             --ingress external \
