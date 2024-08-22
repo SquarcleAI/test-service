@@ -24,6 +24,7 @@ env:
   AZURE_RESOURCE_GROUP: ${{ secrets.AZURE_RESOURCE_GROUP }}
   AZURE_ENVIRONMENT: ${{ secrets.AZURE_ENVIRONMENT }}
   AZURE_LOCATION: ${{ secrets.AZURE_LOCATION }}
+  AZURE_ANALYTICS_WORKSPACE_ID: ${{ secrets.AZURE_ANALYTICS_WORKSPACE_ID }}
 
 permissions:
   id-token: write
@@ -82,4 +83,5 @@ jobs:
             --image ${{ env.ACR_TAG }} \
             --target-port 8080 \
             --ingress external \
+            --logs-workspace-key ${{env.AZURE_ANALYTICS_WORKSPACE_ID}} \
             --query properties.configuration.ingress.fqdn
